@@ -45,7 +45,7 @@ def get_pixels_between_points(p1, p2):
 
     return pixels
 
-file = "trusselSort.jpg"
+file = "apple.jpg"
 
 pygame.init()
 
@@ -153,16 +153,20 @@ while inputNotApproved:
     minBleed = input()
     print("Maximum bleed? (integer)")
     maxBleed = input()
+    print("Minimum Vertical bleed? (integer)")
+    minVertBleed = input()
+    print("Maximum Vertical bleed? (integer)")
+    maxVertBleed = input()
 
     try:
         minBleed = int(minBleed)
         maxBleed = int(maxBleed)
+        minVertBleed = int(minVertBleed)
+        maxVertBleed = int(maxVertBleed)
         break
     except:
+        print("Invalid Value")
         continue
-
-    if isinstance(minBleed, int) and isinstance(maxBleed, int):
-        inputNotApproved = False
 
 #Get a list of all drawn pixels
 allPixels = []
@@ -190,7 +194,9 @@ for x in range(mapWidth):
     for y in range(mapHeight):
         #if we hit a top pixel, make it the top and keep scanning down
         if not intervaling and (x, y) in allPixels:
-            top = (x, y)
+            bleedAmount = random.randint(minVertBleed, maxVertBleed)
+            yVal = max(0, min(y - bleedAmount, mapHeight))
+            top = (x, yVal)
             intervaling = True
             continue
         #hit bottom of interval. Add interval to list and reset values
